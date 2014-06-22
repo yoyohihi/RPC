@@ -6,6 +6,9 @@
 
 namespace rpcLib
 {
+    uint32_t BinderPort;
+    std::string BinderAddress;
+
 	namespace argTypes
 	{
 		typedef enum argType
@@ -36,17 +39,6 @@ namespace rpcLib
 		int Create(bool isInput,bool isOutput, int type, int size = 0);
 	} // implementation in rpc_argTypes.cc
 
-
-	namespace returnCode
-	{
-		const int SUCCESS = 0;
-		const int FAIL    = -1;
-	}
-
-	namespace exception
-	{
-		class UnknownArgType{};
-	}
 }
 
 

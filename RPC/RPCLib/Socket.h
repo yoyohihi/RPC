@@ -12,10 +12,10 @@ public:
 	Socket();
 	virtual ~Socket();
 
-	virtual std::string getHostname() = 0;
+	virtual std::string getHostName() = 0;
 	virtual uint32_t getPortNum() = 0;
 	virtual uint32_t getFileDescriptor() = 0;
-	virtual void connect() = 0;
+	virtual void create_connection() = 0;
 
 };
 

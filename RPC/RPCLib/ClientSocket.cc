@@ -21,9 +21,20 @@ m_hostName("")
 
 }
 
-ClientSocket::~ClientSocket()
+ClientSocket::ClientSocket(uint32_t port, std::string addr):
+m_port(port),
+m_fileDescriptor(0),
+m_hostName(addr)
 {
 
+}
+
+ClientSocket::~ClientSocket()
+{
+	if (0 != m_fileDescriptor)
+	{
+		close(m_fileDescriptor);
+	}
 }
 
 std::string ClientSocket::getHostName()
@@ -41,9 +52,8 @@ uint32_t ClientSocket::getPortNum()
 	return m_port;
 }
 
-void ClientSocket::connect()
+void ClientSocket::create_connection()
 {
-	debug("new client calling connect!");
 	m_fileDescriptor = socket(PF_INET,SOCK_STREAM,0);
 
 	if (m_fileDescriptor > 0)
@@ -55,14 +65,24 @@ void ClientSocket::connect()
 		{
 			debug("get a null host!");
 			close(m_fileDescriptor);
-			throw Exception::NullPointer();
+			throw Exception::ConnectionError();
 		}
 
+	    memcpy( &info.sin_addr, host->h_addr_list[0], host->h_length);
+	    info.sin_family = AF_INET;
+	    info.sin_port = htons(m_port);
 
-
+	    if (connect(m_fileDescriptor, (struct sockaddr *)&info, sizeof(sockaddr_in)) != 0)
+	    {
+	        close(m_fileDescriptor);
+	        debug("connection refused!");
+	        throw Exception::ConnectionError();
+	    }
+	    debug("connection successfully");
+	    return;
 	}
 	debug("error on connecting!");
-	throw Exception::SocketError();
+	throw Exception::ConnectionError();
 }
 
 

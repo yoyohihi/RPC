@@ -9,12 +9,13 @@ class ClientSocket: public Socket
 {
 public:
 	ClientSocket();
+	ClientSocket(uint32_t port, std::string addr);
 	virtual ~ClientSocket();
 
 	virtual std::string getHostName();
 	virtual uint32_t getPortNum();
 	virtual uint32_t getFileDescriptor();
-	virtual void connect();
+	virtual void create_connection();
 private:
 	uint32_t    m_port;
 	uint32_t    m_fileDescriptor;

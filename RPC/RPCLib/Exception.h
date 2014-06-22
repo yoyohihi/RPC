@@ -6,7 +6,7 @@ namespace rpcLib
 {
 	namespace Exception
 	{
-		class SocketError{};
+		class ConnectionError{};
 		class NullPointer{};
 	}
 }
