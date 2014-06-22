@@ -28,12 +28,13 @@ int main()
 
 Binder::Binder()
 {
-
+	m_server = new ServerSocket();
 }
 
 Binder::~Binder()
 {
-
+	delete m_server;
+	m_server = NULL;
 }
 
 void Binder::start()
@@ -46,7 +47,7 @@ void Binder::tearDown()
 
 }
 
-void Binder::addSocket(Socket* sock)
+void Binder::addSock(Socket* sock)
 {
 
 }
