@@ -9,7 +9,12 @@ namespace rpcLib
 
 class Binder : private SocketManager{
 private:
-	void addSocket();
+	void addSocket(Socket* sock);
+	void removeSock(Socket* sock);
+	void registerSock(Socket* sock);
+	void deregisterSock(Socket* sock);
+	void locate(Socket* sock);
+
 public:
 	Binder();
 	~Binder();

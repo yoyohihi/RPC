@@ -36,17 +36,21 @@ int rpcInit()
 	}
 	catch(Exception::ConnectionError &e)
 	{
-
+		delete client;
+		delete server;
+		return Status::FAIL_CONNS;
 	}
 
+	return Status::SUCCESS;
+}
 
+int rpcRegister(char* name, int* argTypes, skeleton f)
+{
 
 }
 
 
-
 int rpcCall(char* name, int* argTypes, void** args);
 int rpcCacheCall(char* name, int* argTypes, void** args);
-int rpcRegister(char* name, int* argTypes, skeleton f);
 int rpcExecute();
 int rpcTerminate();
