@@ -13,9 +13,9 @@ public:
 
 	virtual std::string getHostName();
 private:
-	uint32_t    port;
-	uint32_t    fileDescriptor;
-	std::string hostName;
+	uint32_t    m_port;
+	uint32_t    m_fileDescriptor;
+	std::string m_hostName;
 };
 }
 

@@ -8,7 +8,7 @@ namespace rpcLib
 {
 	namespace argTypes
 	{
-		typedef enum
+		typedef enum argType
 		{
 			ARG_UNKNOWN = 0,
 			ARG_CHAR  = 1,

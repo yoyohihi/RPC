@@ -1,4 +1,5 @@
 #include "rpc_lib.h"
+#include "debug.h"
 
 using namespace rpcLib;
 
