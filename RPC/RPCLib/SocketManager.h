@@ -7,12 +7,19 @@
 
 namespace rpcLib
 {
-class ClientSocket;
+class Socket;
 
 class SocketManager
 {
 private:
-	std::vector<ClientSocket*> m_clientConns;
+	std::vector<Socket*> m_clientConns;
+public:
+	SocketManager();
+	~SocketManager();
+
+	void addSock(Socket* sock);
+	void removeSock(Socket* sock);
+
 };
 }
 

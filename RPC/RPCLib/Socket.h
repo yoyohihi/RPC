@@ -15,6 +15,7 @@ public:
 	virtual std::string getHostname() = 0;
 	virtual uint32_t getPortNum() = 0;
 	virtual uint32_t getFileDescriptor() = 0;
+	virtual void connect() = 0;
 
 };
 

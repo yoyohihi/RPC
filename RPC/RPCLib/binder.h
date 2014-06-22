@@ -14,6 +14,8 @@ public:
 	Binder();
 	~Binder();
 
+	void start();
+	void tearDown();
 };
 
 }
