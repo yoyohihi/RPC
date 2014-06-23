@@ -1,4 +1,6 @@
 #include "rpc_lib.h"
+#include "Exception.h"
+#include "debug.h"
 
 
 using namespace rpcLib;
@@ -33,7 +35,7 @@ argTypes::argType argTypes::getType(uint32_t type)
 		case ARG_OUTPUT:
 		   return ret;
 		default:
-		   throw exception::UnknownArgType();
+		   throw Exception::UnhandledCaseError();
 		   break;
 	}
 

@@ -69,6 +69,7 @@ void ServerSocket::create_connection()
             throw Exception::ConnectionError();
         }
         m_port = ntohs(server_addr.sin_port);
+        debug("server side socket established!");
         return;
     }
 

@@ -1,8 +1,6 @@
 #ifndef _PROTOCOL_H_
 #define _PROTOCOL_H_
 
-#include "rpc_lib.h"
-
 namespace rpcLib
 {
 
@@ -11,10 +9,7 @@ public:
 	Protocol();
 	~Protocol();
 
-	void addData(float toAdd);
-	void addData(double toAdd);
-	void addData(unsigned long toAdd);
-	void addData(unsigned long long toAdd);
+	void packData(int request, char* name, int* type);
 private:
 	argTypes::argType        m_type;
 	size_t                   m_length;

@@ -12,13 +12,16 @@ class Socket;
 class SocketManager
 {
 private:
-	std::vector<Socket*> m_clientConns;
+	std::vector<Socket*> m_manager;
+	Socket*              m_curSock;
+	uint32_t             m_curPtr;
 public:
 	SocketManager();
 	~SocketManager();
 
 	void addSock(Socket* sock);
 	void removeSock(Socket* sock);
+	Socket* rr_schedule();
 
 };
 }

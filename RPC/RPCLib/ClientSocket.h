@@ -16,6 +16,8 @@ public:
 	virtual uint32_t getPortNum();
 	virtual uint32_t getFileDescriptor();
 	virtual void create_connection();
+
+	virtual void sendProtocol(Protocol& p);
 private:
 	uint32_t    m_port;
 	uint32_t    m_fileDescriptor;

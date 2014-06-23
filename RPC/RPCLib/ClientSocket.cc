@@ -68,9 +68,9 @@ void ClientSocket::create_connection()
 			throw Exception::ConnectionError();
 		}
 
-	    memcpy( &info.sin_addr, host->h_addr_list[0], host->h_length);
+	    memcpy( &(info.sin_addr), host->h_addr_list[0], host->h_length);
 	    info.sin_family = AF_INET;
-	    info.sin_port = htons(m_port);
+	    info.sin_port   = htons(m_port);
 
 	    if (connect(m_fileDescriptor, (struct sockaddr *)&info, sizeof(sockaddr_in)) != 0)
 	    {
@@ -78,11 +78,16 @@ void ClientSocket::create_connection()
 	        debug("connection refused!");
 	        throw Exception::ConnectionError();
 	    }
-	    debug("connection successfully");
+	    debug("client side connection successfully");
 	    return;
 	}
 	debug("error on connecting!");
 	throw Exception::ConnectionError();
+}
+
+void ClientSocket::sendProtocol(Protocol& p)
+{
+
 }
 
 

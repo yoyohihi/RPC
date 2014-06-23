@@ -6,6 +6,8 @@
 #include "debug.h"
 #include "StatusCode.h"
 
+#include <string>
+
 using namespace rpcLib;
 
 
@@ -50,7 +52,37 @@ int rpcRegister(char* name, int* argTypes, skeleton f)
 }
 
 
-int rpcCall(char* name, int* argTypes, void** args);
+int rpcCall(char* name, int* argTypes, void** args)
+{
+	std::string Hostname = "";
+	uint32_t    port     = 0;
+
+	if (BinderAddress == "" || BinderPort == 0)
+	{
+		return Status::FAIL_SETUP;
+	}
+
+	Socket* client = new ClientSocket(BinderAddress,BinderPort);
+
+	try
+	{
+		client->create_connection();
+
+		Protocol p;
+		p.packData(Request::REQ_LOC,name,argTypes);
+		client->sendProtocol(p);
+
+	}
+	catch(...)
+	{
+
+	}
+}
+
+
+
+
+
 int rpcCacheCall(char* name, int* argTypes, void** args);
 int rpcExecute();
 int rpcTerminate();

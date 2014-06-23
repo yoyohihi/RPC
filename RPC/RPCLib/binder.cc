@@ -1,34 +1,19 @@
 #include "binder.h"
 #include "debug.h"
 
+#include <iostream>
 
 using namespace rpcLib;
 
 
-int main()
+Binder::Binder():
+m_server(0)
 {
-	Binder* b = new Binder();
-
-	try
+	if ((m_server = new ServerSocket()) == NULL)
 	{
-		b->start();
+		debug("not enough memory");
+		throw Exception::NullPointerError();
 	}
-	catch(Exception::ConnectionError &e)
-	{
-		delete b;
-		return 0;
-	}
-
-	b->tearDown();
-	delete b;
-
-	return 0;
-}
-
-
-Binder::Binder()
-{
-	m_server = new ServerSocket();
 }
 
 Binder::~Binder()
@@ -39,6 +24,11 @@ Binder::~Binder()
 
 void Binder::start()
 {
+	m_server->create_connection();
+
+	std::cout << "BINDER_ADDRESS " << m_server->getHostName() << std::endl;
+	std::cout << "BINDER_PORT "    << m_server->getPortNum() << std::endl;
+
 
 }
 

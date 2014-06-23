@@ -7,7 +7,9 @@ namespace rpcLib
 	namespace Exception
 	{
 		class ConnectionError{};
-		class NullPointer{};
+		class NullPointerError{};
+		class UnhandledCaseError{};
+		class ProtocolError{};
 	}
 }
 
