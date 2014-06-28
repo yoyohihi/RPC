@@ -7,13 +7,16 @@ namespace rpcLib
 class Protocol {
 public:
 	Protocol();
+	Protocol(int request, char* name, int* type);
 	~Protocol();
 
-	void packData(int request, char* name, int* type);
+	int*  getType();
+	int   getRequest();
+	char* getName();
 private:
-	argTypes::argType        m_type;
-	size_t                   m_length;
-	unsigned char*           m_data;
+	int*     m_type;
+	int      m_request;
+	char*    m_name;
 };
 }
 

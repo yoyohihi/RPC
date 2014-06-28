@@ -8,32 +8,40 @@ using namespace rpcLib;
 
 
 Protocol::Protocol():
-m_length(0),
-m_data(NULL),
-m_type(argTypes::ARG_UNKNOWN)
+m_request(Request::REQ_UNKNOWN),
+m_name(0),
+m_type(0)
 {
+}
+
+Protocol::Protocol(int request,char* name, int* type):
+m_request(request),
+m_name(name),
+m_type(type)
+{
+	if (m_name == NULL || m_type == NULL || m_request == Request::REQ_UNKNOWN)
+	{
+		debug("protocol setup error");
+		throw Exception::ProtocolError();
+	}
 }
 
 Protocol::~Protocol()
 {
-	if (m_data)
-	{
-		debug("deleting protocol data");
-		delete []m_data;
-	}
-	m_data = NULL;
+
 }
 
-void Protocol::addData(double toAdd)
+int* Protocol::getType()
 {
-	debug("protocol adding double!");
-	m_type   = argTypes::ARG_DOUBLE;
-	m_length = (sizeof toAdd);
-	debug("data length %d",m_length);
-	if ((m_data = new char[m_length]) != NULL)
-	{
-		memcpy(m_data,(void*)&toAdd,m_length);
-		return;
-	}
-	debug("error return!");
+	return m_type;
+}
+
+int Protocol::getRequest()
+{
+	return m_request;
+}
+
+char* Protocol::getName()
+{
+	return m_name;
 }

@@ -85,9 +85,24 @@ void ClientSocket::create_connection()
 	throw Exception::ConnectionError();
 }
 
-void ClientSocket::sendProtocol(Protocol& p)
+void ClientSocket::sendProtocol(Protocol* p)
 {
+	size_t protocol_len = (sizeof Protocol);
 
+	size_t sent = send(m_fileDescriptor,(void*)p,protocol_len,0);
+	if (sent != protocol_len)
+	{
+		debug("client socket sends %d to binder, total size is %d",sent,protocol_len);
+		throw Exception::ConnectionError();
+	}
+
+	debug("protocol sent!");
+
+}
+
+int ClientSocket::receiveInt()
+{
+	return 0;
 }
 
 

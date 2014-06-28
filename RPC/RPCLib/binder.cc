@@ -29,6 +29,30 @@ void Binder::start()
 	std::cout << "BINDER_ADDRESS " << m_server->getHostName() << std::endl;
 	std::cout << "BINDER_PORT "    << m_server->getPortNum() << std::endl;
 
+	while (1)
+	{
+		if (Status::SUCCESS != recvReq())
+		{
+			debug("binder recv error!");
+			throw Exception::ConnectionError();
+		}
+
+		switch (data)
+		{
+		case Request::REQ_UNKNOWN:
+			break;
+		case Request::REQ_LOC:
+			break;
+		case Request::REQ_REG:
+			break;
+		case Request::REQ_QUIT:
+			break;
+		default:
+			throw Exception::UnhandledCaseError();
+			break;
+		}
+	}
+
 
 }
 
@@ -62,3 +86,40 @@ void Binder::locate(Socket* sock)
 {
 
 }
+
+int Binder::recvReq()
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

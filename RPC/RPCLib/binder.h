@@ -15,6 +15,7 @@ private:
 	void registerSock(Socket* sock);
 	void deregisterSock(Socket* sock);
 	void locate(Socket* sock);
+	int  recvReq();
 
 	Socket* m_server;
 

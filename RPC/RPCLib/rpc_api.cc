@@ -57,6 +57,8 @@ int rpcCall(char* name, int* argTypes, void** args)
 	std::string Hostname = "";
 	uint32_t    port     = 0;
 
+	int result;
+
 	if (BinderAddress == "" || BinderPort == 0)
 	{
 		return Status::FAIL_SETUP;
@@ -68,9 +70,18 @@ int rpcCall(char* name, int* argTypes, void** args)
 	{
 		client->create_connection();
 
-		Protocol p;
-		p.packData(Request::REQ_LOC,name,argTypes);
+		Protocol* p = new Protocol(Request::REQ_LOC,name,argTypes);
 		client->sendProtocol(p);
+
+		result = client->receiveInt();
+
+		if (result != Status::SUCCESS)
+		{
+			delete p;
+			return result;
+		}
+
+
 
 	}
 	catch(...)
