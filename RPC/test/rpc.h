@@ -18,7 +18,6 @@ extern "C" {
 #define ARG_INPUT   31
 #define ARG_OUTPUT  30
 
-
 typedef int (*skeleton)(int *, void **);
 
 extern int rpcInit();
@@ -27,6 +26,7 @@ extern int rpcCacheCall(char* name, int* argTypes, void** args);
 extern int rpcRegister(char* name, int* argTypes, skeleton f);
 extern int rpcExecute();
 extern int rpcTerminate();
+
 
 #ifdef __cplusplus
 }

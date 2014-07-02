@@ -13,6 +13,95 @@
 
 #define CHAR_ARRAY_LENGTH 100
 
+void test_f5() {
+  /* prepare the arguments for f5 */
+  short input[1] = {2};
+  short output[2] = {1, 1};
+  int count = 2;
+
+  int argTypes[count + 1];
+  argTypes[0] = (1 << ARG_INPUT) | (ARG_SHORT << 16) | 1;
+  argTypes[1] = (1 << ARG_OUTPUT) | (ARG_SHORT << 16) | 2;
+  argTypes[2] = 0;
+
+  void **args;
+  args = (void **)malloc(count * sizeof(void *));
+  args[0] = (void *)input;
+  args[1] = (void *)output;
+
+  int s = rpcCall("f5", argTypes, args);
+  /* test the return of f5 */
+  printf(
+    "\nEXPECTED return of f5 is: 2 2\n"
+  );
+
+  if (s >= 0) {
+    printf("ACTUAL return of f5 is: ");
+    int i;
+    for (i = 0; i < 2; i++) {
+      printf(" %hd", *(((short *)args[1]) + i));
+    }
+    printf("\n");
+  }
+  else {
+    printf("Error: %d\n", s);
+  }  
+}
+
+void test_f6() {
+  /* prepare the arguments for f6 */
+  double output;
+  int count = 1;
+
+  int argTypes[count + 1];
+  argTypes[0] = (1 << ARG_OUTPUT) | (ARG_DOUBLE << 16);
+  argTypes[1] = 0;
+
+  void **args;
+  args = (void **)malloc(count * sizeof(void *));
+  args[0] = (void *)&output;
+
+  int s = rpcCall("f6", argTypes, args);
+  /* test the return of f5 */
+  printf(
+    "\nEXPECTED return of f6 is: 3.14159265359\n"
+  );
+
+  if (s >= 0) {
+    printf("ACTUAL return of f6 is: ");
+    printf("%f\n", *((double*)args));
+    printf("\n");
+  }
+  else {
+    printf("Error: %d\n", s);
+  }
+}
+
+void test_f7() {
+  /* prepare the arguments for f7 */
+  int count = 0;
+
+  int argTypes[count + 1];
+  argTypes[0] = 0;
+
+  void **args;
+  args = (void **)malloc(count * sizeof(void *));
+
+  int s = rpcCall("f7", argTypes, args);
+  /* test the return of f5 */
+  printf(
+    "\nEXPECTED return of f7 is: \n"
+  );
+
+  if (s >= 0) {
+    printf("ACTUAL return of f7 is: ");
+    printf("\n");
+  }
+  else {
+    printf("Error: %d\n", s);
+  }  
+}
+
 int main() {
 
   /* prepare the arguments for f0 */
@@ -161,6 +250,10 @@ int main() {
   printf("\ndo you want to terminate? y/n: ");
   if (getchar() == 'y')
     rpcTerminate();
+
+  test_f5();
+  test_f6();
+  test_f7();
 
   /* end of client.c */
   return 0;
