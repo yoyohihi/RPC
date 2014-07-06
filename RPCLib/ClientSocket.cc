@@ -1,6 +1,7 @@
 #include "ClientSocket.h"
 #include "Exception.h"
 #include "debug.h"
+#include "StatusCode.h"
 
 #include <string>
 #include <sys/socket.h>
@@ -63,7 +64,7 @@ void ClientSocket::create_connection()
 
 		if (host == NULL)
 		{
-			debug("get a null host!");
+			debug(ERROR,"get a null host!");
 			close(m_fileDescriptor);
 			throw Exception::ConnectionError();
 		}
@@ -75,19 +76,49 @@ void ClientSocket::create_connection()
 	    if (connect(m_fileDescriptor, (struct sockaddr *)&info, sizeof(sockaddr_in)) != 0)
 	    {
 	        close(m_fileDescriptor);
-	        debug("connection refused!");
+	        debug(ERROR,"connection refused!");
 	        throw Exception::ConnectionError();
 	    }
-	    debug("client side connection successfully");
+	    debug(INFO,"client side connection successfully");
 	    return;
 	}
-	debug("error on connecting!");
+	debug(ERROR,"error on connecting!");
 	throw Exception::ConnectionError();
 }
 
 void ClientSocket::sendProtocol(Protocol& p)
 {
+	size_t protocol_len = sizeof (Protocol);
 
+	size_t sent = send(m_fileDescriptor,(void*)&p,protocol_len,0);
+	if (sent != protocol_len)
+	{
+		debug(DEBUG,"client socket sends %lu to binder, total size is %lu",sent,protocol_len);
+		throw Exception::ConnectionError();
+	}
+
+	debug(DEBUG,"protocol sent!");
+
+}
+
+int ClientSocket::receiveInt()
+{
+	int data;
+	recv(m_fileDescriptor,&data,sizeof(int),0);
+
+	return data;
+}
+
+int ClientSocket::sendInt(int data)
+{
+	int size = sizeof (int);
+	if (size != send(m_fileDescriptor,&data,sizeof(int),0))
+	{
+		debug(ERROR,"client fails to send int");
+		return Status::FAIL_SENT;
+	}
+
+	return Status::SUCCESS;
 }
 
 

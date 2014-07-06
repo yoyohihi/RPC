@@ -1,13 +1,10 @@
-#ifndef _RPC_LIB_H_
-#define _RPC_LIN_H_
+#ifndef _RPC_ARGS_H_
+#define _RPC_ARGS_H_
 
 #include <stdint.h>
 
-
 namespace rpcLib
 {
-    uint32_t BinderPort;
-    std::string BinderAddress;
 
 	namespace argTypes
 	{
@@ -33,23 +30,15 @@ namespace rpcLib
 		int getArraySize(uint32_t type);
 
         // getter
-		argType getType(uint32_t type);
+		unsigned int getType(uint32_t type);
 
         // create a new argType
 		int Create(bool isInput,bool isOutput, int type, int size = 0);
-	} // implementation in rpc_argTypes.cc
+
+		// de-sugar functions
+		std::string deSugar(std::string func_name, int* types);
+	} // end
 
 }
-
-
-// RPC LIB API declaration
-typedef int (*skeleton)(int *, void **);
-
-int rpcInit();
-int rpcCall(char* name, int* argTypes, void** args);
-int rpcCacheCall(char* name, int* argTypes, void** args);
-int rpcRegister(char* name, int* argTypes, skeleton f);
-int rpcExecute();
-int rpcTerminate();
 
 #endif

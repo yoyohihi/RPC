@@ -2,6 +2,7 @@
 #define _CLIENT_SOCKET_H_
 
 #include <string>
+#include "Socket.h"
 
 namespace rpcLib
 {
@@ -18,6 +19,8 @@ public:
 	virtual void create_connection();
 
 	virtual void sendProtocol(Protocol& p);
+	virtual int  receiveInt();
+	virtual int  sendInt(int data);
 private:
 	uint32_t    m_port;
 	uint32_t    m_fileDescriptor;

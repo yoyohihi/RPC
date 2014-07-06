@@ -2,10 +2,15 @@
 #include "debug.h"
 #include "Exception.h"
 #include "Const.h"
+#include "StatusCode.h"
 
-#include <sys/socket.h>
+
+#include <sys/types.h>
 #include <netdb.h>
-#include <arpa/inet.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/unistd.h>
 
 using namespace rpcLib;
 
@@ -14,16 +19,17 @@ using namespace rpcLib;
 ServerSocket::ServerSocket():
 m_port(0),
 m_hostName(""),
-m_fileDescriptor(0)
+m_fileDescriptor(0),
+m_accept(0)
 {
 
 }
 
 ServerSocket::~ServerSocket()
 {
-	if (0 != m_fileDescriptor)
+	if (0 != m_accept)
 	{
-		close(m_fileDescriptor);
+		close(m_accept);
 	}
 }
 
@@ -42,7 +48,7 @@ void ServerSocket::create_connection()
         if((gethostname(hostname, sizeof hostname)) == -1)
         {
             close(m_fileDescriptor);
-            debug("error in getting host name!");
+            debug(DEBUG,"error in getting host name!");
             throw Exception::ConnectionError();
         }
         m_hostName = std::string(hostname);
@@ -50,29 +56,66 @@ void ServerSocket::create_connection()
         if(bind(m_fileDescriptor, (struct sockaddr*)&server_addr, sizeof server_addr))
         {
             close(m_fileDescriptor);
-            debug("bind error!");
+            debug(DEBUG,"bind error!");
             throw Exception::ConnectionError();
         }
 
         if (listen(m_fileDescriptor,Const::maxConns) != 0)
         {
         	close(m_fileDescriptor);
-        	debug("listen error!");
+        	debug(DEBUG,"listen error!");
         	throw Exception::ConnectionError();
         }
 
         socklen_t sockLen = sizeof(server_addr);
         if(getsockname(m_fileDescriptor, (struct sockaddr *)&server_addr, &sockLen) == -1)
         {
-            close(fileDescriptor);
-            debug("error in getting port!");
+            close(m_fileDescriptor);
+            debug(DEBUG,"error in getting port!");
             throw Exception::ConnectionError();
         }
         m_port = ntohs(server_addr.sin_port);
-        debug("server side socket established!");
+        debug(INFO,"server side socket established!, host name: %s ; port: %d",m_hostName.c_str(),m_port);
         return;
     }
 
-    debug("socket error");
+    debug(ERROR,"server socket error");
     throw Exception::ConnectionError();
 }
+
+
+int ServerSocket::receiveInt()
+{
+    int bytesRecv;
+    uint32_t net_value;
+
+    bytesRecv = recv(m_accept, (void*)&net_value, sizeof(uint32_t), 0);
+    if( bytesRecv == 0 )
+    {
+    	debug(ERROR,"received nothing");
+    }
+
+    unsigned int value = ntohl(net_value);
+    return value;
+}
+
+
+std::string ServerSocket::getHostName()
+{
+	return m_hostName;
+}
+
+uint32_t ServerSocket::getFileDescriptor()
+{
+	return m_fileDescriptor;
+}
+
+uint32_t ServerSocket::getPortNum()
+{
+	return m_port;
+}
+
+
+
+
+

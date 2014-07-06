@@ -35,7 +35,7 @@ void SocketManager::removeSock(Socket* sock)
 			return;
 		}
 	}
-	debug("trying to remove a sock that does not reside in vector");
+	debug(DEBUG,"trying to remove a sock that does not reside in vector");
 }
 
 Socket* SocketManager::rr_schedule()

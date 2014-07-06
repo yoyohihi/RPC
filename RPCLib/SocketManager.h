@@ -2,13 +2,11 @@
 #define _SOCKET_MANAGER_H_
 
 #include <vector>
-
+#include "Socket.h"
 
 
 namespace rpcLib
 {
-class Socket;
-
 class SocketManager
 {
 private:

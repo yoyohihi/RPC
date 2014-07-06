@@ -1,11 +1,11 @@
-#include "rpc_lib.h"
+#include <sstream>
 #include "Exception.h"
 #include "debug.h"
+#include "rpc_args.h"
 
 
 using namespace rpcLib;
 
-// implementation of namespace : argTypes
 
 bool argTypes::isInput(uint32_t type)
 {
@@ -19,9 +19,9 @@ bool argTypes::isOutput(uint32_t type)
 	return (mask & type);
 }
 
-argTypes::argType argTypes::getType(uint32_t type)
+unsigned int argTypes::getType(uint32_t type)
 {
-    argType ret = (type & 0x00ff0000) >> 16;
+    unsigned int ret = (type & 0x00ff0000) >> 16;
 	// verify
 	switch (ret)
 	{
@@ -41,3 +41,26 @@ argTypes::argType argTypes::getType(uint32_t type)
 
 	return ARG_UNKNOWN;
 }
+
+std::string argTypes::deSugar(std::string func_name, int* types)
+{
+	std::stringstream stream;
+	stream << func_name << " :";
+
+	for (int i = 0 ; types[i] != 0; ++i)
+	{
+		unsigned int func_type = getType(types[i]);
+		stream << func_type;
+		if (types[i+1] != 0)
+		{
+			stream << " ";
+		}
+	}
+	return stream.str();
+}
+
+
+
+
+
+
