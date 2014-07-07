@@ -2,17 +2,17 @@ CXX = g++
 CFLAGS = -Wall -g
 LD = ld
 
-OBJECTS = binder_main.o
-LIBS = rpc.a
-LIB_INCLUDE = $(patsubst %.a,-l%,$(LIBS))
+OBJECTS = binder_main.o test_client.o
 
-all: binder
 
 %.o: %.c
 		$(CXX) $(CFLAGS) -o $@ $<
 		
-all: $(LIBS) $(OBJECTS)
-		$(CXX) $@ -L. $(LIBS_INCLUDE) -o all
+binder: binder_main.o
+		$(CXX) binder_main.o -L. -lrpc -o binder
+		
+client: test_client.o
+		$(CXX) test_client.o -L. -lrpc -o client
 		
 clean:
-		rm -rf *.o
+		rm -rf *.o binder client

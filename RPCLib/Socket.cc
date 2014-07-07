@@ -20,6 +20,11 @@ int Socket::sendInt(int data)
 	return 0;
 }
 
+void Socket::sendProtocol(Protocol& p)
+{
+
+}
+
 int Socket::receiveInt()
 {
 	return 0;

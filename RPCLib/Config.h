@@ -13,7 +13,6 @@ namespace rpcLib
 
 		// pipes
 		Socket* m_BinderClient;
-		Socket* m_BinderServer;
 	}
 }
 

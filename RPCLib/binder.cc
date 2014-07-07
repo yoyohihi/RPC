@@ -78,14 +78,18 @@ void Binder::start()
 
 					FD_SET(new_fd,&master);
 					if (new_fd > max_fd) max_fd = new_fd;
+					debug(DEBUG,"accepted");
 				}
 				else
 				{
+					//debug(DEBUG,"retrieving data");
 					int request,revLen;
-					revLen = recv(server_fd,&request,sizeof(request),0);
+					revLen = recv(i,&request,sizeof(request),0);
 					if (revLen > 0)
 					{
-						switch (s.decrypt(request))
+						int data = s.decrypt(request);
+						debug(INFO,"received data %d",data);
+						switch (data)
 						{
 						case Request::REQ_LOC:
 							locate(i);

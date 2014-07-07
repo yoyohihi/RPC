@@ -19,11 +19,7 @@ private:
 	void removeSock(Socket* sock);
 	void registerSock(Socket* sock);
 	void deregisterSock(Socket* sock);
-<<<<<<< HEAD:RPCLib/binder.h
 	void locate(int fd);
-=======
-	void locate(Socket* sock);
->>>>>>> FETCH_HEAD:RPC/RPCLib/binder.h
 	int  recvReq();
 
 	Socket* m_server;

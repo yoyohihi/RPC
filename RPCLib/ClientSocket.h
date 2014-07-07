@@ -18,14 +18,9 @@ public:
 	virtual uint32_t getFileDescriptor();
 	virtual void create_connection();
 
-<<<<<<< HEAD:RPCLib/ClientSocket.h
 	virtual void sendProtocol(Protocol& p);
 	virtual int  receiveInt();
 	virtual int  sendInt(int data);
-=======
-	virtual void sendProtocol(Protocol* p);
-	virtual int  receiveInt();
->>>>>>> FETCH_HEAD:RPC/RPCLib/ClientSocket.h
 private:
 	uint32_t    m_port;
 	uint32_t    m_fileDescriptor;

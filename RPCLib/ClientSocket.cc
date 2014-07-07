@@ -86,9 +86,9 @@ void ClientSocket::create_connection()
 	throw Exception::ConnectionError();
 }
 
-void ClientSocket::sendProtocol(Protocol* p)
+void ClientSocket::sendProtocol(Protocol& p)
 {
-<<<<<<< HEAD:RPCLib/ClientSocket.cc
+
 	size_t protocol_len = sizeof (Protocol);
 
 	size_t sent = send(m_fileDescriptor,(void*)&p,protocol_len,0);
@@ -99,24 +99,11 @@ void ClientSocket::sendProtocol(Protocol* p)
 	}
 
 	debug(DEBUG,"protocol sent!");
-=======
-	size_t protocol_len = (sizeof Protocol);
-
-	size_t sent = send(m_fileDescriptor,(void*)p,protocol_len,0);
-	if (sent != protocol_len)
-	{
-		debug("client socket sends %d to binder, total size is %d",sent,protocol_len);
-		throw Exception::ConnectionError();
-	}
-
-	debug("protocol sent!");
->>>>>>> FETCH_HEAD:RPC/RPCLib/ClientSocket.cc
 
 }
 
 int ClientSocket::receiveInt()
 {
-<<<<<<< HEAD:RPCLib/ClientSocket.cc
 	int data;
 	recv(m_fileDescriptor,&data,sizeof(int),0);
 
@@ -133,9 +120,6 @@ int ClientSocket::sendInt(int data)
 	}
 
 	return Status::SUCCESS;
-=======
-	return 0;
->>>>>>> FETCH_HEAD:RPC/RPCLib/ClientSocket.cc
 }
 
 

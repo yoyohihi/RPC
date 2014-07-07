@@ -11,6 +11,7 @@
 #include "binder.h"
 #include "rpc_args.h"
 #include "Config.h"
+#include "api_header.h"
 
 #include <string>
 
@@ -46,6 +47,7 @@ int rpcInit()
 		return Status::FAIL_CONNS;
 	}
 
+	debug(DEBUG,"rpc init successfully!");
 	return Status::SUCCESS;
 }
 
@@ -74,20 +76,21 @@ int rpcRegister(char* name, int* argTypes, skeleton f)
 
 int rpcCall(char* name, int* argTypes, void** args)
 {
-	std::string Hostname = "";
-	uint32_t    port     = 0;
+	char* port    = getenv("BINDER_PORT");
+	char* address = getenv("BINDER_ADDRESS");
+
+	if (port && address)
+	{
+		Config::BinderPort    = atoi(port);
+		Config::BinderAddress = std::string(address);
+	}
+	else
+	{
+		debug(ERROR,"setup error");
+		return Status::FAIL_SETUP;
+	}
 
 	int result;
-
-	if (Config::BinderAddress == "" || Config::BinderPort == 0)
-	{
-		return Status::FAIL_SETUP;
-	}
-
-	if (NULL == Config::m_BinderClient)
-	{
-		return Status::FAIL_SETUP;
-	}
 
 	Security s;
 	Socket* client = new ClientSocket(Config::BinderPort,Config::BinderAddress);
@@ -98,6 +101,7 @@ int rpcCall(char* name, int* argTypes, void** args)
 
 		int req = Request::REQ_LOC;
 		client->sendInt(s.encrypt(req));
+		debug(DEBUG,"sent int");
 
 		result = client->receiveInt();
 
@@ -114,11 +118,3 @@ int rpcCall(char* name, int* argTypes, void** args)
 
 	return Status::SUCCESS;
 }
-
-
-
-
-
-int rpcCacheCall(char* name, int* argTypes, void** args);
-int rpcExecute();
-int rpcTerminate();

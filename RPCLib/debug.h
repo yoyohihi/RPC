@@ -14,7 +14,7 @@
 		switch (type) \
 		{ \
 		case INFO: \
-		     printf("\e[34mINFO: "fmt"\e[m\n",##argv); \
+		     printf("\e[34mINFO:  "fmt"\e[m\n",##argv); \
 		     break; \
 		case DEBUG: \
 		     if (IDEBUG) \
@@ -23,7 +23,7 @@
 		     } \
 		     break; \
 		case ERROR: \
-			printf("\e[31mERROR: "fmt"\e[m\n",##argv); \
+			printf("\e[31mERROR:  "fmt"\e[m\n",##argv); \
 			break; \
 		} \
 	}while(0)

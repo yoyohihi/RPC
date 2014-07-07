@@ -75,11 +75,7 @@ void ServerSocket::create_connection()
             throw Exception::ConnectionError();
         }
         m_port = ntohs(server_addr.sin_port);
-<<<<<<< HEAD:RPCLib/ServerSocket.cc
         debug(INFO,"server side socket established!, host name: %s ; port: %d",m_hostName.c_str(),m_port);
-=======
-        debug("server side socket established!, host name: %s ; port: %d",m_hostName.c_str(),server_addr.sin_port);
->>>>>>> FETCH_HEAD:RPC/RPCLib/ServerSocket.cc
         return;
     }
 
