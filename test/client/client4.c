@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "../rpc.h"
+#include "./client.h"
 
 int main() {
 	/* prepare the arguments for f7 */
@@ -28,5 +29,7 @@ int main() {
 	}
 	else {
 		printf("Error: %d\n", s);
-	}  
+	}
+
+	graceful_exit();
 }

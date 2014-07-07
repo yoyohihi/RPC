@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "../rpc.h"
+#include "./client.h"
 
 #define CHAR_ARRAY_LENGTH 100
 
@@ -157,10 +158,7 @@ int main() {
   printf("\nEXPECTED return of f4: some integer other than 0");
   printf("\nACTUAL return of f4: %d\n", s4);
 
-  /* rpcTerminate */
-  printf("\ndo you want to terminate? y/n: ");
-  if (getchar() == 'y')
-    rpcTerminate();
+  graceful_exit();
 
   /* end of client.c */
   return 0;
