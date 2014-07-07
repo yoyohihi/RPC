@@ -18,7 +18,7 @@ int main() {
 	args = (void **)malloc(count * sizeof(void *));
 
 	int s = rpcCall("f7", argTypes, args);
-	/* test the return of f5 */
+	/* test the return of f7 */
 	printf(
 	  "\nEXPECTED return of f7 is: \n"
 	);

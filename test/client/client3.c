@@ -21,7 +21,7 @@ int main() {
 	args[0] = (void *)&output;
 
 	int s = rpcCall("f6", argTypes, args);
-	/* test the return of f5 */
+	/* test the return of f6 */
 	printf(
 		"\nEXPECTED return of f6 is: 3.14159265359\n"
 	);

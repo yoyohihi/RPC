@@ -10,6 +10,7 @@ test_client: client/client.h
 		$(CC) $(CFLAGS) -c client/client2.c
 		$(CC) $(CFLAGS) -c client/client3.c
 		$(CC) $(CFLAGS) -c client/client4.c
+		$(CC) $(CFLAGS) -c client/client5.c
 
 test_server:
 		$(CC) $(CFLAGS) -c server/server.c
