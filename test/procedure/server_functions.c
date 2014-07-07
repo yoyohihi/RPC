@@ -2,6 +2,57 @@
 #include <stdio.h>
 #include <string.h>
 
+int f0(int a, int b) {
+  return a + b;
+}
+
+long f1(char a, short b, int c, long d) {
+  return a + b * c - d;
+}
+
+char* f2(float a, double b) {
+
+  char* ret = new char[5];
+  ret[0] = '3';
+  ret[1] = '1';
+  ret[2] = '2';
+  ret[3] = '3';
+
+  if (a == 3.14159 && b == 1234.1001) {
+    ret[4] = '0';
+    return ret;
+  }
+
+  ret[4] = '4';
+
+  return ret;
+}
+
+void f3(long* input) {
+  long size = input[0];
+  long tmp = 0;
+
+  for (int i = 0; i < size - 1; i++) {
+    tmp = input[10 - i];
+    input[10 - i] = input[i];
+    input[i] = tmp;
+  }
+}
+
+void f5(short* input, short* output) {
+  output[0] = input[0];
+  output[1] = input[0];
+  return;
+}
+
+double f6() {
+  return 3.14159265359;
+}
+
+void f7() {
+  return;
+}
+
 int f0_Skel(int *argTypes, void **args) {
 
   *(int *)args[0] = f0(*(int *)args[1], *(int *)args[2]);
@@ -40,4 +91,20 @@ int f3_Skel(int *argTypes, void **args) {
 int f4_Skel(int *argTypes, void **args) {
 
   return -1; /* can not print the file */
+}
+
+
+int f5_Skel(int *argTypes, void **args) {
+  f5((short *) (*args), (short *) (*(args + 1)));
+  return 0;
+}
+
+int f6_Skel(int *argTypes, void **args) {
+  *((double *) *args) = f6();
+  return 0;
+}
+
+int f7_Skel(int *argTypes, void **args) {
+  f7();
+  return 0;
 }
