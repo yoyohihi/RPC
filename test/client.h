@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../rpc.h"
+#include "./rpc.h"
+
+#define CHAR_ARRAY_LENGTH 100
 
 void graceful_exit() {
 	/* rpcTerminate */

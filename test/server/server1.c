@@ -1,5 +1,7 @@
+// This server covers the valid test cases
+
 #include "../rpc.h"
-#include "../server_functions.h"
+#include "../server1_functions.h"
 
 int main(int argc, char *argv[]) {
 

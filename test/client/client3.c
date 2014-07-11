@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "../rpc.h"
-#include "./client.h"
+#include "../client.h"
 
 int main() {
 	/* prepare the arguments for f6 */

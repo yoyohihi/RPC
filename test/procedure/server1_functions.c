@@ -1,7 +1,8 @@
-#include "../server_functions.h"
+#include "../server1_functions.h"
 #include <stdio.h>
 #include <string.h>
 
+// Function implementations
 int f0(int a, int b) {
   return a + b;
 }
@@ -19,11 +20,11 @@ char* f2(float a, double b) {
   ret[3] = '3';
 
   if (a == 3.14159 && b == 1234.1001) {
-    ret[4] = '0';
+    ret[4] = '4';
     return ret;
   }
 
-  ret[4] = '4';
+  ret[4] = '5';
 
   return ret;
 }
@@ -53,6 +54,7 @@ void f7() {
   return;
 }
 
+// Skeletons
 int f0_Skel(int *argTypes, void **args) {
 
   *(int *)args[0] = f0(*(int *)args[1], *(int *)args[2]);

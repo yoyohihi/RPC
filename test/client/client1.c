@@ -10,9 +10,7 @@
 #include <string.h>
 
 #include "../rpc.h"
-#include "./client.h"
-
-#define CHAR_ARRAY_LENGTH 100
+#include "../client.h"
 
 int main() {
 
@@ -77,7 +75,8 @@ int main() {
   args2[2] = (void *)&b2;
 
   /* prepare the arguments for f3 */
-  long a3[11] = {11, 109, 107, 105, 103, 101, 102, 104, 106, 108, 110};
+  // long a3[11] = {11, 109, 107, 105, 103, 101, 102, 104, 106, 108, 110};
+  long a3[11] = {11, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110};
   int count3 = 1;
   int argTypes3[count3 + 1];
   void **args3;
