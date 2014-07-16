@@ -49,10 +49,29 @@ void test_round_robin_call() {
 	args3 = (void **)malloc(count3 * sizeof(void *));
 	args3[0] = (void *)a3;
 
+	// First hit server1 by calling f4
+	char *a4 = "non_exist_file_to_be_printed";
+	int count4 = 1;
+	int argTypes4[count4 + 1];
+	void **args4;
+
+	argTypes4[0] = (1 << ARG_INPUT) | (ARG_CHAR << 16) | strlen(a4);
+	argTypes4[1] = 0;
+
+	args4 = (void **)malloc(count4 * sizeof(void *));
+	args4[0] = (void *)a4;
+
+	int s4 = rpcCall("f4", argTypes4, args4);
+
+	if (s4 == 0) {
+		printf("%s\n", "ERROR: incorrect return value of f4");
+	}
 
 	int nCalls = 4;
-	int state = 0;
+	int state = 2;
 
+	// f3 on server2 should be selected since server1 was selected when calling f4
+	// Assume that the other client are not active between these calls
 	while(nCalls--) {
 		int s3 = rpcCall("f3", argTypes3, args3);
 
