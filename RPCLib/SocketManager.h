@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
+#include <deque>
 #include "Socket.h"
 
 
@@ -17,11 +19,15 @@ private:
 	std::vector<Socket*> m_manager;
 	std::map<std::string,std::vector<Socket*> > m_database;
 
+	std::deque<Socket*> servers;
+	std::set<std::pair<Socket*, std::string> > registered;
+
 	void addSock(Socket* sock);
 	void addDatabase(std::string id, Socket* client);
 
 	void removeSock(Socket* sock);
 	Socket* rr_schedule(std::vector<Socket*> sock_list);
+	int rr_schedule(std::string function_name, Socket* target);
 public:
 	SocketManager();
 	~SocketManager();
