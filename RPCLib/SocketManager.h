@@ -6,7 +6,6 @@
 #include <map>
 #include <set>
 #include <list>
-#include <deque>
 #include "Socket.h"
 
 
@@ -19,7 +18,7 @@ private:
 	std::vector<Socket*> m_manager;
 	std::map<std::string,std::vector<Socket*> > m_database;
 
-	std::deque<Socket*> servers;
+	std::list<Socket*> servers;
 	std::set<std::pair<Socket*, std::string> > registered;
 
 	void addSock(Socket* sock);

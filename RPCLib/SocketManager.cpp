@@ -41,7 +41,7 @@ void SocketManager::removeSock(Socket* sock)
 			break;
 		}
 	}
-	for (std::deque<Socket*>::iterator it = servers.begin(); it != servers.end(); it++) {
+	for (std::list<Socket*>::iterator it = servers.begin(); it != servers.end(); it++) {
 		if (*it == sock) {
 			servers.erase(it);
 		}
@@ -124,18 +124,17 @@ int SocketManager::rr_schedule(std::string function_id, Socket* target) {
 	int num_visited = 0;
 	std::pair<Socket*, std::string> procedure;
 
-	while(num_visited < num_servers) {
-		Socket* server = servers.front();
-		servers.pop_front();
-		servers.push_back(server);
-
+	for (std::list<Socket*>::iterator it = servers.begin(); it != servers.end(); it++) {
+		Socket* server = *it;
 		procedure = std::make_pair(server, function_id);
+
 		if (registered.find(procedure) != registered.end()) {
 			target = server;
+			servers.erase(it);
+			servers.push_back(server);
+
 			return 0;
 		}
-
-		num_visited++;
 	}
 
 	return -1;
