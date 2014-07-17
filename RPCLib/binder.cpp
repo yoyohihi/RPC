@@ -135,16 +135,28 @@ void Binder::func_register()
 	int server_port         = m_server->receiveInt();    // server port
 	char* server_addr       = m_server->receiveString(); // server address
 
-	debug(DEBUG,"binder receives reg info %s",reg_info);
-	debug(DEBUG,"binder receives server port %d",server_port);
-	debug(DEBUG,"binder receives server addr %s",server_addr);
+	if (reg_info == NULL ||
+		server_port == Status::FAIL_CONNS ||
+		server_port == Status::FAIL_DATA ||
+		server_addr == NULL) {
 
-	std::string addr(server_addr);
+		debug(ERROR, "Corrupted function register request");
 
-	// register
-	addServerSocket(reg_info,server_port,addr);
+	} else {
+		debug(DEBUG,"binder receives reg info %s",reg_info);
+		debug(DEBUG,"binder receives server port %d",server_port);
+		debug(DEBUG,"binder receives server addr %s",server_addr);
 
-	m_server->sendInt(Status::SUCCESS);
+		std::string addr(server_addr);
+
+		// register
+		addServerSocket(reg_info,server_port,addr);
+
+		if (m_server->sendInt(Status::SUCCESS) == Status::FAIL_SENT) {
+			debug(ERROR,"server disconnected before receiving function register response");
+		}
+	}
+
 
 	delete reg_info;
 	delete server_addr;
@@ -167,13 +179,16 @@ void Binder::locate()
 
 	if (ret == Status::SUCCESS)
 	{
-		m_server->sendInt(ret);
-		m_server->sendInt(port);
-		m_server->sendString(addr);
+		if (m_server->sendInt(ret) == Status::FAIL_SENT || 
+			m_server->sendInt(port) == Status::FAIL_SENT ||
+			m_server->sendString(addr) == Status::FAIL_SENT) {
+			debug(ERROR,"client disconnected before receiving successful locate response");
+		}
 	}
 	else if (ret == Status::FAIL_LOC)
 	{
-		m_server->sendInt(ret);
+		if (m_server->sendInt(ret) == Status::FAIL_SENT)
+			debug(ERROR,"client disconnected before receiving failed locate response");
 	}
 
 	delete data_str;
