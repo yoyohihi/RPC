@@ -2,7 +2,11 @@
 #define _SOCKET_MANAGER_H_
 
 #include <vector>
+#include <string>
+#include <map>
+#include <list>
 #include "Socket.h"
+
 
 
 namespace rpcLib
@@ -11,15 +15,21 @@ class SocketManager
 {
 private:
 	std::vector<Socket*> m_manager;
-	Socket*              m_curSock;
-	uint32_t             m_curPtr;
+	std::map<std::string,std::vector<Socket*> > m_database;
+
+	void addSock(Socket* sock);
+	void addDatabase(std::string id, Socket* client);
+
+	void removeSock(Socket* sock);
+	Socket* rr_schedule(std::vector<Socket*> sock_list);
 public:
 	SocketManager();
 	~SocketManager();
 
-	void addSock(Socket* sock);
-	void removeSock(Socket* sock);
-	Socket* rr_schedule();
+	void addServerSocket(char* id,uint32_t port, std::string addr);
+	void teminate_notifyAll();
+	int  locate_server(char* id, uint32_t* port, char* addr);
+	int  clocate_server(char* id, std::vector<Socket*> *cache);
 
 };
 }

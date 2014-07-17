@@ -17,5 +17,7 @@ int main()
 		return 0;
 	}
 
+	b.stop();
+
 	return 0;
 }

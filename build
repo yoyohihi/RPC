@@ -1,0 +1,11 @@
+#! /bin/bash
+
+make clean
+cd rpclib
+make clean
+make
+cd ..
+make
+make client
+make server
+make client2

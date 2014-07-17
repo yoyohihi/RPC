@@ -6,8 +6,8 @@ namespace rpcLib
 {
       namespace Const
       {
-      	  const int maxConns  = 10;
-      	  const int maxBuffer = 256;
+      	  const int maxConns  = 10; //< Max connections waiting in queue
+      	  const int maxBuffer = 256;//< Max buffer size
       }
 }
 
