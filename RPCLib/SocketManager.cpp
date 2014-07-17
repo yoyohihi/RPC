@@ -25,6 +25,7 @@ SocketManager::~SocketManager()
 void SocketManager::addSock(Socket* sock)
 {
 	m_manager.push_back(sock);
+	servers.push_back(sock);
 }
 
 void SocketManager::removeSock(Socket* sock)
@@ -36,7 +37,13 @@ void SocketManager::removeSock(Socket* sock)
 			m_manager.erase(it);
 			delete sock;
 			sock = NULL;
-			return;
+			// return;
+			break;
+		}
+	}
+	for (std::deque<Socket*>::iterator it = servers.begin(); it != servers.end(); it++) {
+		if (*it == sock) {
+			servers.erase(it);
 		}
 	}
 	debug(ERROR,"trying to remove a sock that does not reside in vector");
@@ -52,6 +59,7 @@ Socket* SocketManager::rr_schedule(std::vector<Socket*> sock_list)
 void SocketManager::addDatabase(std::string id, Socket* client)
 {
 	m_database[id].push_back(client);
+	registered.insert(make_pair(client, id));
 }
 
 
@@ -95,17 +103,10 @@ void SocketManager::teminate_notifyAll()
 
 int SocketManager::locate_server(char* func_id, uint32_t* port, char* addr)
 {
-	std::map<std::string,std::vector<Socket*> >::iterator it = m_database.find(std::string(func_id));
-
-	if (it == m_database.end()) // not found
-	{
+	Socket* client = NULL;
+	if (rr_schedule(std::string(func_id), client) < 0) {
 		return Status::FAIL_LOC;
 	}
-
-	// return port & address
-	// do a round robin scheduling
-	std::vector<Socket*> sock_list = it->second;
-	Socket* client = rr_schedule(sock_list);
 
 	*port = client->getPortNum();
 	const char* hn = client->getHostName().c_str();
@@ -116,6 +117,28 @@ int SocketManager::locate_server(char* func_id, uint32_t* port, char* addr)
 	debug(DEBUG,"Locate successfully, get port number %d, server host name %s",*port,addr);
 
 	return Status::SUCCESS;
+}
+
+int SocketManager::rr_schedule(std::string function_id, Socket* target) {
+	int num_servers = servers.size();
+	int num_visited = 0;
+	std::pair<Socket*, std::string> procedure;
+
+	while(num_visited < num_servers) {
+		Socket* server = servers.front();
+		servers.pop_front();
+		servers.push_back(server);
+
+		procedure = std::make_pair(server, function_id);
+		if (registered.find(procedure) != registered.end()) {
+			target = server;
+			return 0;
+		}
+
+		num_visited++;
+	}
+
+	return -1;
 }
 
 int SocketManager::clocate_server(char* id, std::vector<Socket*> *cache)
