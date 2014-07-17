@@ -72,21 +72,6 @@ char* f2(float a, double b) {
  * a: INOUT array
  */
 
-void f3(long a[]) {
-
-  int len = a[0];
-  int i, j, k;
-
-  for (i = 0; i < len; i++) {
-    for (j = len - 1; j > i; j--) {
-      if (a[j] > a[j - 1]) {
-	k = a[j];
-	a[j] = a[j - 1];
-	a[j - 1] = k;
-      }
-    }
-  }
-}
 
 /*
  * print file named by a
@@ -123,11 +108,6 @@ int f2_Skel(int *argTypes, void **args) {
   return 0;
 }
 
-int f3_Skel(int *argTypes, void **args) {
-
-  f3((long *)(*args));
-  return 0;
-}
 
 /*
  * this skeleton doesn't do anything except returns
@@ -139,65 +119,63 @@ int f4_Skel(int *argTypes, void **args) {
   return -1; /* can not print the file */
 }
 
+
+void f3(long* input) {
+  long size = input[0];
+  long tmp = 0;
+
+  for (int i = 0; i < size - 1; i++) {
+    tmp = input[10 - i];
+    input[10 - i] = input[i];
+    input[i] = tmp;
+  }
+}
+
+int f3_Skel(int *argTypes, void **args) {
+
+  f3((long *)(*args));
+  return 0;
+}
+
+
+
 int main(int argc, char *argv[]) {
 
   /* create sockets and connect to the binder */
   rpcInit();
 
-  /* prepare server functions' signatures */
-  int count0 = 3;
-  int count1 = 5;
-  int count2 = 3;
-  int count3 = 1;
-  int count4 = 1;
-  int argTypes0[count0 + 1];
-  int argTypes1[count1 + 1];
+  // Test function overload
+  int count2 = 1;
   int argTypes2[count2 + 1];
-  int argTypes3[count3 + 1];
-  int argTypes4[count4 + 1];
-
-  argTypes0[0] = (1 << ARG_OUTPUT) | (ARG_INT << 16);
-  argTypes0[1] = (1 << ARG_INPUT) | (ARG_INT << 16);
-  argTypes0[2] = (1 << ARG_INPUT) | (ARG_INT << 16);
-  argTypes0[3] = 0;
-
-  argTypes1[0] = (1 << ARG_OUTPUT) | (ARG_LONG << 16);
-  argTypes1[1] = (1 << ARG_INPUT) | (ARG_CHAR << 16);
-  argTypes1[2] = (1 << ARG_INPUT) | (ARG_SHORT << 16);
-  argTypes1[3] = (1 << ARG_INPUT) | (ARG_INT << 16);
-  argTypes1[4] = (1 << ARG_INPUT) | (ARG_LONG << 16);
-  argTypes1[5] = 0;
-
-  /*
-   * the length in argTypes2[0] doesn't have to be 100,
-   * the server doesn't know the actual length of this argument
-   */
   argTypes2[0] = (1 << ARG_OUTPUT) | (ARG_CHAR << 16) | 100;
   argTypes2[1] = (1 << ARG_INPUT) | (ARG_FLOAT << 16);
-  argTypes2[2] = (1 << ARG_INPUT) | (ARG_DOUBLE << 16);
+  argTypes2[2] = (1 << ARG_INPUT) | (ARG_FLOAT << 16); // The type is changed from double to float
   argTypes2[3] = 0;
+  //rpcRegister("f2", argTypes2, *f2_Skel_2);
 
+  // Testing same function call (f3) registered by two servers
   /*
    * f3 takes an array of long.
   */
+  int count3 = 1;
+  int argTypes3[count3 + 1];
   argTypes3[0] = (1 << ARG_OUTPUT) | (1 << ARG_INPUT) | (ARG_LONG << 16) | 11;
   argTypes3[1] = 0;
+  rpcRegister("f3", argTypes3, *f3_Skel);
 
-  /* same here, 28 is the exact length of the parameter */
-  argTypes4[0] = (1 << ARG_INPUT) | (ARG_CHAR << 16) | 28;
-  argTypes4[1] = 0;
+  // Testing same function call (f20) registered twice with different skeletons
+  int count20 = 2;
+  int argTypes20[count20 + 1];
+  argTypes20[0] = (1 << ARG_INPUT) | (ARG_SHORT << 16) | 1;
+  argTypes20[1] = (1 << ARG_OUTPUT) | (ARG_SHORT << 16) | 2;
+  argTypes20[2] = 0;
+  //rpcRegister("f20", argTypes20, *f20_Skel);
 
-  /*
-   * register server functions f0~f4
-   */
-  //rpcRegister("f0", argTypes0, *f0_Skel);
-  rpcRegister("f1", argTypes1, *f1_Skel);
-  //rpcRegister("f2", argTypes2, *f2_Skel);
-  //rpcRegister("f3", argTypes3, *f3_Skel);
-  //rpcRegister("f4", argTypes4, *f4_Skel);
+  //rpcRegister("f20", argTypes20, *f20_Skel_2);
 
+  /* call rpcExecute */
   rpcExecute();
 
+  /* return */
   return 0;
-
 }

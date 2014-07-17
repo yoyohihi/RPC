@@ -100,7 +100,6 @@ int rpcRegister(char* name, int* argTypes, skeleton f)
 			return Status::SUCCESS_WARNING;
 		}
 
-		// register it in local server database
 		Config::func_database[reg] = f;
 	}
 	catch(...)
