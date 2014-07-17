@@ -15,12 +15,10 @@ namespace rpcLib
 class Binder : private SocketManager
 {
 private:
-	void addSock(Socket* sock);
-	void removeSock(Socket* sock);
-	void registerSock(Socket* sock);
+	void func_register();
 	void deregisterSock(Socket* sock);
-	void locate(int fd);
-	int  recvReq();
+	void locate();
+	void clocate();
 
 	Socket* m_server;
 
@@ -29,7 +27,7 @@ public:
 	~Binder();
 
 	void start();
-	void tearDown();
+	void stop();
 };
 
 }

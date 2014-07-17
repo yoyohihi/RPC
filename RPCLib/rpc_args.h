@@ -18,7 +18,7 @@ namespace rpcLib
 			ARG_DOUBLE= 5,
 			ARG_FLOAT = 6,
 			ARG_INPUT = 31,
-			ARG_OUTPUT= 30
+			ARG_OUTPUT= 30,
 		} argType;
 
 		// I/O
@@ -26,17 +26,21 @@ namespace rpcLib
 		bool isInput(uint32_t type);
 
         // Array
-		bool isArray(uint32_t type);
+		bool isArray(uint32_t type, int* len);
 		int getArraySize(uint32_t type);
 
         // getter
 		unsigned int getType(uint32_t type);
 
-        // create a new argType
-		int Create(bool isInput,bool isOutput, int type, int size = 0);
 
 		// de-sugar functions
-		std::string deSugar(std::string func_name, int* types);
+		std::string getFuncSignature(std::string func_name, int* types,int* argLen);
+
+		std::string t2s(int type);
+
+		int getTypeSize(std::string in);
+
+		int getOutputIndex(int* type);
 	} // end
 
 }

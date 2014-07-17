@@ -2,7 +2,7 @@
 #define _SOCKET_H_
 
 #include <string>
-#include "Protocol.h"
+#include <cstdlib>
 
 namespace rpcLib
 {
@@ -18,9 +18,17 @@ public:
 	virtual uint32_t    getFileDescriptor()      = 0;
 	virtual void        create_connection()      = 0;
 
-	virtual void        sendProtocol(Protocol& p);
-	virtual int         receiveInt();
-	virtual int         sendInt(int data);
+	virtual int         receiveInt(){return 0;}
+	virtual char*       receiveString(){return NULL;}
+	virtual void*       receiveVoid(){return NULL;}
+
+
+	virtual int         sendInt(int data){return 0;}
+	virtual int         sendString(const char* data){return 0;}
+	virtual int         sendVoid(void* data, int len){return 0;}
+
+	virtual void assignComm(int fd){}
+	virtual int  getServingClient(){return 0;}
 
 };
 

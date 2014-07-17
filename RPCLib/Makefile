@@ -3,7 +3,7 @@ AR = ar
 ARFLAGS = rcs
 CFLAGS = -Wall -g
 
-OBJECTS = binder.o ClientSocket.o Protocol.o rpc_api.o rpc_argType.o ServerSocket.o Socket.o SocketManager.o Security.o
+OBJECTS = binder.o ClientSocket.o rpc_api.o rpc_argType.o ServerSocket.o Socket.o SocketManager.o Security.o Util.o
 
 all:librpc.a
 
