@@ -150,11 +150,6 @@ void Binder::func_register()
 	delete server_addr;
 }
 
-void Binder::deregisterSock(Socket* sock)
-{
-
-}
-
 void Binder::locate()
 {
 	debug(INFO,"locating server....");

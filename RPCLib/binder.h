@@ -16,7 +16,6 @@ class Binder : private SocketManager
 {
 private:
 	void func_register();
-	void deregisterSock(Socket* sock);
 	void locate();
 	void clocate();
 
